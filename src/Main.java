@@ -217,10 +217,10 @@ public class Main {
 
 		try {
 			Scanner scelta = new Scanner(System.in);
-			System.out.println("1 - Aggiungi Studente");
+			System.out.println("1 - Aggiungi studente");
 			System.out.println("2 - Cerca studente");
 			System.out.println("3 - Visualizza tutti gli studenti");
-			System.out.println("4 - Elimina Studente per anno");
+			System.out.println("4 - Elimina studente per anno");
 			int risposta = scelta.nextInt();
 			switch (risposta) {
 
