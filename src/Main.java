@@ -30,6 +30,8 @@ public class Main {
 		Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3307/prog1904", "root", "12345");
 		Statement query = cn.createStatement();
 		ResultSet listastudenti = query.executeQuery("SELECT * from tabellastudenti");
+		Statement conta = cn.createStatement();
+		ResultSet numerostudenti = conta.executeQuery("SELECT COUNT(*) AS total from tabellastudenti");
 
 		if (!listastudenti.next()) {
 			System.out.println("Nessuno studente nel database!");
@@ -39,6 +41,10 @@ public class Main {
 				System.out.println("Nome: " + listastudenti.getString("nome"));
 				System.out.println("Anno: " + listastudenti.getString("anno"));
 				System.out.println(" ");
+			}
+			while (numerostudenti.next()) {
+			int quantita = numerostudenti.getInt("total");
+			System.out.println("Gli studenti in tutto sono: " + quantita);
 			}
 		}
 
