@@ -1,0 +1,38 @@
+try {
+			// usiamo il try per “tentare” la connessione //al // db, che potrebbe dar luogo
+			// ad un imprevisto //(eccezione)
+			Class.forName("com.mysql.cj.jdbc.Driver"); // nome driver
+			Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3307/prog1904", "root", "12345");
+			// Lo statement è una azione da effettuare verso il DB.
+			// Creiamo quindi un oggetto di tipo Statement
+			Statement st = cn.createStatement(); // n.b.: lo invoca la //connessione al db
+			// Creiamo un oggetto di tipo ResultSet che genera oggetti //query
+			ResultSet rs = st.executeQuery("SHOW DATABASES");
+			// creo lo statement con l'ogggetto PreparedStatement con una query generica,
+			// per motivi di sicurezza
+			PreparedStatement pst = cn.prepareStatement(
+					"INSERT INTO studenti2 (user, password, matricola, nome, anno) VALUES (?,?,?, ?, ?)");
+			// inserimento dei valori in ordine
+
+			pst.setString(1, "root");
+			pst.setString(2, "12346");
+			pst.setInt(3, 00003);
+			pst.setString(4, "Super Mario");
+			pst.setInt(5, 1990);
+			// esecuzione della query
+			pst.execute();
+
+			// query di visualizzazione di dati dal database
+
+			Statement query = cn.createStatement();
+			ResultSet rs2 = query.executeQuery("SELECT * FROM studenti2");
+
+			while (rs2.next()) {
+
+				System.out.println("Matricola: " + rs2.getInt("matricola") + " " + "Nome: " + rs2.getString("nome"));
+			}
+
+			System.out.println("Connesso");
+		} catch (Exception e) {
+			System.out.println("Connessione errata" + e);
+		}
