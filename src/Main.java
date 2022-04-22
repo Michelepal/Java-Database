@@ -98,9 +98,16 @@ public class Main {
 		ResultSet filtrostudenti = st
 				.executeQuery("SELECT * from tabellastudenti WHERE nome LIKE '" + lettera.substring(0, 1) + "%'");
 
-		while (filtrostudenti.next()) {
-			System.out.println("Matricola: " + filtrostudenti.getString("matricola"));
-			System.out.println("Nome: " + filtrostudenti.getString("nome"));
+		if (filtrostudenti.isBeforeFirst()) {
+			while (filtrostudenti.next()) {
+
+				System.out.println("Matricola: " + filtrostudenti.getString("matricola"));
+				System.out.println("Nome: " + filtrostudenti.getString("nome"));
+				System.out.println("Anno: " + filtrostudenti.getString("anno"));
+
+			}
+		} else {
+			System.out.println("Nessuna corrispondenza!");
 		}
 
 	}
