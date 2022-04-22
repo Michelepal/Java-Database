@@ -72,10 +72,16 @@ public class Main {
 		Statement st = cn.createStatement();
 		ResultSet filtrostudenti = st.executeQuery("SELECT * from tabellastudenti WHERE anno>" + filtro);
 
-		while (filtrostudenti.next()) {
-			System.out.println("Matricola: " + filtrostudenti.getString("matricola"));
-			System.out.println("Nome: " + filtrostudenti.getString("nome"));
+		if (filtrostudenti.isBeforeFirst()) {
+			while (filtrostudenti.next()) {
 
+				System.out.println("Matricola: " + filtrostudenti.getString("matricola"));
+				System.out.println("Nome: " + filtrostudenti.getString("nome"));
+				System.out.println("Anno: " + filtrostudenti.getString("anno"));
+
+			}
+		} else {
+			System.out.println("Nessuna corrispondenza!");
 		}
 	}
 
@@ -134,18 +140,18 @@ public class Main {
 		 * studentenuovo.getAnno()); pst.execute(); } else {
 		 */
 		String risultatocontrollo = controllo(listastudenti, studentenuovo);
-			if (risultatocontrollo != "doppione") {
-				PreparedStatement pst = cn.prepareStatement(
-						"INSERT INTO tabellastudenti (user, password, matricola, nome, anno) VALUES (?,?,?, ?, ?)");
-				pst.setString(1, studentenuovo.getUser());
-				pst.setString(2, studentenuovo.getPassword());
-				pst.setInt(3, studentenuovo.getMatricola());
-				pst.setString(4, studentenuovo.getNome());
-				pst.setInt(5, studentenuovo.getAnno());
-				pst.execute();
+		if (risultatocontrollo != "doppione") {
+			PreparedStatement pst = cn.prepareStatement(
+					"INSERT INTO tabellastudenti (user, password, matricola, nome, anno) VALUES (?,?,?, ?, ?)");
+			pst.setString(1, studentenuovo.getUser());
+			pst.setString(2, studentenuovo.getPassword());
+			pst.setInt(3, studentenuovo.getMatricola());
+			pst.setString(4, studentenuovo.getNome());
+			pst.setInt(5, studentenuovo.getAnno());
+			pst.execute();
 
-			} else
-				System.out.println("Studente già presente");
+		} else
+			System.out.println("Studente già presente");
 	}
 //	}
 
@@ -177,13 +183,13 @@ public class Main {
 			} else {
 				userpresente = "assente";
 				System.out.println(userpresente);
-			} 
+			}
 		}
 
 		for (String password : passwordstudenti) {
 			System.out.print("la password esiste?");
 			if (passwordstudente.equals(password)) {
-				
+
 				passwordpresente = "presente";
 				System.out.println(passwordpresente);
 				break;
@@ -196,12 +202,12 @@ public class Main {
 		for (int matricola : matricolastudenti) {
 			System.out.print("La matricola esiste?");
 			if (matricolastudente == matricola) {
-	
+
 				matricolapresente = "presente";
 				System.out.println(matricolapresente);
 				break;
 			} else {
-				
+
 				matricolapresente = "assente";
 				System.out.println(matricolapresente);
 			}
