@@ -92,14 +92,12 @@ public class Main {
 		ResultSet filtrostudenti = st
 				.executeQuery("SELECT * from tabellastudenti WHERE nome LIKE '" + lettera.substring(0, 1) + "%'");
 
-		if (filtrostudenti != null) {
+		
 			while (filtrostudenti.next()) {
 				System.out.println("Matricola: " + filtrostudenti.getString("matricola"));
 				System.out.println("Nome: " + filtrostudenti.getString("nome"));
 
 			}
-		} else
-			System.out.println("Nessuno studente trovato!");
 
 	}
 
