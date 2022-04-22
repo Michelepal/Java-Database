@@ -31,13 +31,13 @@ public class Main {
 		Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3307/prog1904", "root", "12345");
 		Statement query = cn.createStatement();
 		ResultSet listastudenti = query.executeQuery("SELECT * from tabellastudenti");
-		try {
+		if (listastudenti.isBeforeFirst()) {
 			while (listastudenti.next()) {
 				System.out.println("Matricola: " + listastudenti.getString("matricola"));
 				System.out.println("Nome: " + listastudenti.getString("nome"));
 				System.out.println("Anno: " + listastudenti.getString("anno"));
 			}
-		} catch (Exception e) {
+		} else {
 			// TODO: handle exception
 			System.out.println("Non ci sono studenti nel database!");
 		}
