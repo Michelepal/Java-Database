@@ -160,9 +160,6 @@ public class Main {
 			passwordstudenti.add(listastudenti.getString("password"));
 			matricolastudenti.add(listastudenti.getInt("matricola"));
 		}
-		System.out.println(userstudenti);
-		System.out.println(passwordstudenti);
-		System.out.println(matricolastudenti);
 
 		String userpresente = "";
 		String passwordpresente = "";
@@ -171,9 +168,6 @@ public class Main {
 		String passwordstudente = studentenuovo.getPassword();
 		int matricolastudente = studentenuovo.getMatricola();
 
-		System.out.println(userstudente);
-		System.out.println(passwordstudente);
-		System.out.println(matricolastudente);
 		for (String user : userstudenti) {
 			System.out.print("L'utente esiste?");
 			if (userstudente.equals(user)) {
