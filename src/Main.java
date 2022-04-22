@@ -92,12 +92,10 @@ public class Main {
 		ResultSet filtrostudenti = st
 				.executeQuery("SELECT * from tabellastudenti WHERE nome LIKE '" + lettera.substring(0, 1) + "%'");
 
-		
-			while (filtrostudenti.next()) {
-				System.out.println("Matricola: " + filtrostudenti.getString("matricola"));
-				System.out.println("Nome: " + filtrostudenti.getString("nome"));
-
-			}
+		while (filtrostudenti.next()) {
+			System.out.println("Matricola: " + filtrostudenti.getString("matricola"));
+			System.out.println("Nome: " + filtrostudenti.getString("nome"));
+		}
 
 	}
 
@@ -126,18 +124,17 @@ public class Main {
 		Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3307/prog1904", "root", "12345");
 		Statement query = cn.createStatement();
 		ResultSet listastudenti = query.executeQuery("SELECT * FROM tabellastudenti");
-		if (listastudenti.next() == false) {
-			PreparedStatement pst = cn.prepareStatement(
-					"INSERT INTO tabellastudenti (user, password, matricola, nome, anno) VALUES (?,?,?, ?, ?)");
-			pst.setString(1, studentenuovo.getUser());
-			pst.setString(2, studentenuovo.getPassword());
-			pst.setInt(3, studentenuovo.getMatricola());
-			pst.setString(4, studentenuovo.getNome());
-			pst.setInt(5, studentenuovo.getAnno());
-			pst.execute();
-		} else {
-			String risultatocontrollo = controllo(listastudenti, studentenuovo);
-			if (risultatocontrollo == "nuovo") {
+		/*
+		 * if (listastudenti.next() == false) { PreparedStatement pst =
+		 * cn.prepareStatement(
+		 * "INSERT INTO tabellastudenti (user, password, matricola, nome, anno) VALUES (?,?,?, ?, ?)"
+		 * ); pst.setString(1, studentenuovo.getUser()); pst.setString(2,
+		 * studentenuovo.getPassword()); pst.setInt(3, studentenuovo.getMatricola());
+		 * pst.setString(4, studentenuovo.getNome()); pst.setInt(5,
+		 * studentenuovo.getAnno()); pst.execute(); } else {
+		 */
+		String risultatocontrollo = controllo(listastudenti, studentenuovo);
+			if (risultatocontrollo != "doppione") {
 				PreparedStatement pst = cn.prepareStatement(
 						"INSERT INTO tabellastudenti (user, password, matricola, nome, anno) VALUES (?,?,?, ?, ?)");
 				pst.setString(1, studentenuovo.getUser());
@@ -149,8 +146,8 @@ public class Main {
 
 			} else
 				System.out.println("Studente già presente");
-		}
 	}
+//	}
 
 	private static String controllo(ResultSet listastudenti, Studente studentenuovo) throws SQLException {
 
@@ -163,45 +160,67 @@ public class Main {
 			passwordstudenti.add(listastudenti.getString("password"));
 			matricolastudenti.add(listastudenti.getInt("matricola"));
 		}
+		System.out.println(userstudenti);
+		System.out.println(passwordstudenti);
+		System.out.println(matricolastudenti);
 
-		boolean userpresente = false;
-		boolean passwordpresente = false;
-		boolean matricolapresente = false;
+		String userpresente = "";
+		String passwordpresente = "";
+		String matricolapresente = "";
 		String userstudente = studentenuovo.getUser();
 		String passwordstudente = studentenuovo.getPassword();
 		int matricolastudente = studentenuovo.getMatricola();
 
+		System.out.println(userstudente);
+		System.out.println(passwordstudente);
+		System.out.println(matricolastudente);
 		for (String user : userstudenti) {
-
+			System.out.print("L'utente esiste?");
 			if (userstudente.equals(user)) {
-				userpresente = true;
-			} else
-				userpresente = false;
+				userpresente = "presente";
+				System.out.println(userpresente);
+				break;
+			} else {
+				userpresente = "assente";
+				System.out.println(userpresente);
+			} 
 		}
 
 		for (String password : passwordstudenti) {
-
+			System.out.print("la password esiste?");
 			if (passwordstudente.equals(password)) {
-				passwordpresente = true;
-			} else
-				passwordpresente = false;
+				
+				passwordpresente = "presente";
+				System.out.println(passwordpresente);
+				break;
+			} else {
+				passwordpresente = "assente";
+				System.out.println(passwordpresente);
+			}
 		}
 
 		for (int matricola : matricolastudenti) {
-
+			System.out.print("La matricola esiste?");
 			if (matricolastudente == matricola) {
-				matricolapresente = true;
-			} else
-				matricolapresente = false;
+	
+				matricolapresente = "presente";
+				System.out.println(matricolapresente);
+				break;
+			} else {
+				
+				matricolapresente = "assente";
+				System.out.println(matricolapresente);
+			}
 		}
 
-		if (matricolapresente == true && passwordpresente == true && userpresente == true) {
+		if (matricolapresente == "presente" && passwordpresente == "presente" && userpresente == "presente") {
 
 			return "doppione";
 
 			// TODO Auto-generated method stub
-		} else
+		} else {
 			return "nuovo";
+		}
 	}
 
 	public static void main(String[] args) {
