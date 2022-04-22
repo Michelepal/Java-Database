@@ -19,6 +19,7 @@ public class Main {
 		Class.forName("com.mysql.cj.jdbc.Driver");
 		Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3307/prog1904", "root", "12345");
 		PreparedStatement cancella = cn.prepareStatement("DELETE FROM tabellastudenti WHERE anno=?");
+		Statement query = cn.createStatement();
 		cancella.setInt(1, scelta);
 		cancella.executeUpdate();
 		System.out.println("Eliminato!");
@@ -30,24 +31,16 @@ public class Main {
 		Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3307/prog1904", "root", "12345");
 		Statement query = cn.createStatement();
 		ResultSet listastudenti = query.executeQuery("SELECT * from tabellastudenti");
-		Statement conta = cn.createStatement();
-		ResultSet numerostudenti = conta.executeQuery("SELECT COUNT(*) AS total from tabellastudenti");
-
-		if (!listastudenti.next()) {
-			System.out.println("Nessuno studente nel database!");
-		} else {
+		try {
 			while (listastudenti.next()) {
 				System.out.println("Matricola: " + listastudenti.getString("matricola"));
 				System.out.println("Nome: " + listastudenti.getString("nome"));
 				System.out.println("Anno: " + listastudenti.getString("anno"));
-				System.out.println(" ");
 			}
-			while (numerostudenti.next()) {
-			int quantita = numerostudenti.getInt("total");
-			System.out.println("Gli studenti in tutto sono: " + quantita);
-			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.out.println("Non ci sono studenti nel database!");
 		}
-
 	}
 
 	private static void cercaStudente() throws ClassNotFoundException, SQLException {
@@ -78,15 +71,11 @@ public class Main {
 //		query.setString(1, lettera.substring(0, 1));
 		Statement st = cn.createStatement();
 		ResultSet filtrostudenti = st.executeQuery("SELECT * from tabellastudenti WHERE anno>" + filtro);
-		if (!filtrostudenti.next()) {
-			System.out.println("Nessuna corrispondenza!");
-		} else {
-			while (filtrostudenti.next()) {
-				System.out.println("Matricola: " + filtrostudenti.getString("matricola"));
-				System.out.println("Nome: " + filtrostudenti.getString("nome"));
-				System.out.println(" ");
 
-			}
+		while (filtrostudenti.next()) {
+			System.out.println("Matricola: " + filtrostudenti.getString("matricola"));
+			System.out.println("Nome: " + filtrostudenti.getString("nome"));
+
 		}
 	}
 
@@ -103,11 +92,10 @@ public class Main {
 		ResultSet filtrostudenti = st
 				.executeQuery("SELECT * from tabellastudenti WHERE nome LIKE '" + lettera.substring(0, 1) + "%'");
 
-		if (filtrostudenti.next()) {
+		if (filtrostudenti != null) {
 			while (filtrostudenti.next()) {
 				System.out.println("Matricola: " + filtrostudenti.getString("matricola"));
 				System.out.println("Nome: " + filtrostudenti.getString("nome"));
-				System.out.println(" ");
 
 			}
 		} else
@@ -223,10 +211,10 @@ public class Main {
 
 		try {
 			Scanner scelta = new Scanner(System.in);
-			System.out.println("1 - Aggiungi studente");
+			System.out.println("1 - Aggiungi Studente");
 			System.out.println("2 - Cerca studente");
 			System.out.println("3 - Visualizza tutti gli studenti");
-			System.out.println("4 - Elimina studente per anno");
+			System.out.println("4 - Elimina Studente per anno");
 			int risposta = scelta.nextInt();
 			switch (risposta) {
 
